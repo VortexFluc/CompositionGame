@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Composition</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="brain_logo">Brain logo</string>
+    <string name="game_rules">In this game you need to choose correct answer. You would be shown a number in circle. This is a root number. Below it in a left rectangle you would see another number - first addendum. You must choose correct number in rows below rectangles - second addendum.</string>
+    <string name="example">Example:\n In cicrle: 8.\n In left rectangle: 3\n Options: 1, 2, 3, 5, 7, 6.\n Correct answer is 5</string>
+    <string name="submit">Ok, let\'s play!</string>
+    <string name="choose_your_destiny">Choose your destiny:</string>
+    <string name="test">Test</string>
+    <string name="easy">Easy</string>
+    <string name="normal">Normal</string>
+    <string name="hard">Hard</string>
+    <string name="correct_answers_minimum">Correct answers: %s (Minimum is %s)</string>
+    <string name="required_amount_cor_answers">Required amount of correct answers: %s</string>
+    <string name="your_score">Your score: %s</string>
+    <string name="required_percent_of_correct_answers">Required percent of correct answers: %s</string>
+    <string name="your_percent_of_correct_answers">Your percent of correct answers: %s</string>
+    <string name="try_again">Try again</string>
+    <string name="unknown_addendum">\?</string>
 </resources>
