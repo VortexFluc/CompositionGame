@@ -7,8 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.composition.R
 import com.example.composition.databinding.FragmentChooseLevelBinding
+import com.example.composition.domain.entity.Level
 
 class ChooseLevelFragment : Fragment() {
+
+    companion object {
+        const val NAME = "choose_level_fragment"
+        fun newInstance(): ChooseLevelFragment {
+            return ChooseLevelFragment()
+        }
+    }
 
     private var _binding: FragmentChooseLevelBinding? = null
     private val binding: FragmentChooseLevelBinding
@@ -24,6 +32,31 @@ class ChooseLevelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        with(binding) {
+            buttonTest.setOnClickListener {
+                launchGameFragment(Level.TEST)
+            }
+
+            buttonEasy.setOnClickListener {
+                launchGameFragment(Level.EASY)
+            }
+
+            buttonNormal.setOnClickListener {
+                launchGameFragment(Level.NORMAL)
+            }
+
+            buttonHard.setOnClickListener {
+                launchGameFragment(Level.HARD)
+            }
+        }
+    }
+
+    private fun launchGameFragment(level: Level) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_fragment_container, GameFragment.newInstance(level))
+            .addToBackStack(GameFragment.NAME)
+            .commit()
     }
 
     override fun onDestroyView() {
