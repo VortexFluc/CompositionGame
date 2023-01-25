@@ -20,7 +20,7 @@ class GameFinishedFragment : Fragment() {
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_RESULT, gameResult)
+                    putParcelable(ARG_RESULT, gameResult)
                 }
             }
         }
@@ -40,7 +40,9 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        gameResult = requireArguments().getSerializable(ARG_RESULT) as GameResult
+        requireArguments().getParcelable<GameResult>(ARG_RESULT)?.let {
+            gameResult = it
+        }
     }
 
     override fun onCreateView(
@@ -53,15 +55,26 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    retryGame()
+                }
+            })
+
+        with(binding) {
+            button.setOnClickListener {
                 retryGame()
             }
-        })
+        }
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager.popBackStack(GameFragment.NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        requireActivity().supportFragmentManager.popBackStack(
+            GameFragment.NAME,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
     }
 
 
