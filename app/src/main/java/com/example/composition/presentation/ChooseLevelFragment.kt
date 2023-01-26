@@ -12,13 +12,6 @@ import com.example.composition.domain.entity.Level
 
 class ChooseLevelFragment : Fragment() {
 
-    companion object {
-        const val NAME = "choose_level_fragment"
-        fun newInstance(): ChooseLevelFragment {
-            return ChooseLevelFragment()
-        }
-    }
-
     private var _binding: FragmentChooseLevelBinding? = null
     private val binding: FragmentChooseLevelBinding
         get() = _binding ?: throw RuntimeException("FragmentChooseLevelBinding == null")
@@ -54,10 +47,9 @@ class ChooseLevelFragment : Fragment() {
     }
 
     private fun launchGameFragment(level: Level) {
-        val args = Bundle().apply {
-            putParcelable(GameFragment.ARG_LEVEL, level)
-        }
-        findNavController().navigate(R.id.action_chooseLevelFragment2_to_gameFragment2, args)
+        findNavController().navigate(
+            ChooseLevelFragmentDirections.actionChooseLevelFragment2ToGameFragment2(level)
+        )
     }
 
     override fun onDestroyView() {

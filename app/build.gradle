@@ -4,7 +4,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs' version '2.4.2' apply false
+    id 'androidx.navigation.safeargs.kotlin'
+
 }
 
 android {
