@@ -2,9 +2,9 @@ package com.example.composition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.composition.R
 import com.example.composition.data.GameRepository_Impl
 import com.example.composition.domain.entity.GameResult
@@ -14,7 +14,9 @@ import com.example.composition.domain.entity.Question
 import com.example.composition.domain.usecases.GenerateQuestionUseCase
 import com.example.composition.domain.usecases.GetGameSettingsUseCase
 
-class GameViewModel(application: Application) : AndroidViewModel(application) {
+class GameViewModel(
+    private val application: Application,
+    private val level: Level) : ViewModel() {
 
     companion object {
         private const val MILLIS_IN_SECONDS = 1000L
@@ -25,10 +27,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         GenerateQuestionUseCase(GameRepository_Impl)
     private val getGameSettingsUseCase: GetGameSettingsUseCase =
         GetGameSettingsUseCase(GameRepository_Impl)
-    private val context = application
 
     private lateinit var _gameSettings: GameSettings
-    private lateinit var level: Level
     private var timer: CountDownTimer? = null
 
     private val _formattedTime = MutableLiveData<String>()
@@ -66,16 +66,18 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val gameResult: LiveData<GameResult>
         get() = _gameResult
 
+    init {
+        setupGame()
+    }
 
-    fun setupGame(level: Level) {
-        getGameSettings(level)
+    private fun setupGame() {
+        getGameSettings()
         setupTimer()
         updateProgress()
         generateQuestion()
     }
 
-    private fun getGameSettings(level: Level) {
-        this.level = level
+    private fun getGameSettings() {
         _gameSettings = getGameSettingsUseCase(level)
         _minPercent.value = _gameSettings.minPercentOfRightAnswers
     }
@@ -88,7 +90,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         val percent = calculatePercentOfRightAnswers()
         _percentOfRightAnswers.value = percent
         _progressString.value = String.format(
-            context.resources.getString(R.string.correct_answers_minimum),
+            this.application.resources.getString(R.string.correct_answers_minimum),
             _countOfRightAnswers,
             _gameSettings.minCountOfRightAnswers
         )
