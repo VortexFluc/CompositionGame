@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.*
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
@@ -18,29 +20,18 @@ import com.example.composition.domain.entity.Level
 import com.example.composition.domain.entity.Question
 
 class GameFragment : Fragment() {
-
-    companion object {
-        private const val TAG = "GameFragment"
-        private const val ARG_LEVEL = "level"
-        const val NAME = "GameFragment"
-        fun newInstance(level: Level): GameFragment {
-            return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_LEVEL, level)
-                }
-            }
-        }
-    }
-
-    private var _binding: FragmentGameBinding? = null
+        private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
         get() = _binding ?: throw RuntimeException("FragmentGameBinding == null")
 
+
+    private val args by navArgs<GameFragmentArgs>()
+
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(args.level, requireActivity().application)
+    }
     private val viewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     private lateinit var timer: CountDownTimer
@@ -56,11 +47,6 @@ class GameFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,7 +59,6 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setupButtonClickListeners()
-        viewModel.setupGame(level)
 
     }
 
@@ -147,19 +132,8 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun parseArgs() {
-        requireArguments().getParcelable<Level>(ARG_LEVEL)?.let {
-            level = it
-        }
-    }
-
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.main_fragment_container, GameFinishedFragment.newInstance(gameResult)
-            )
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(GameFragmentDirections.actionGameFragment2ToGameFinishedFragment2(gameResult))
     }
 
     override fun onDestroyView() {
