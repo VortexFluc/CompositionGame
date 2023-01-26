@@ -51,24 +51,23 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun setupViews() {
+        binding.gameResult = gameResult
         with(binding) {
-
             ivReaction.setImageResource(getEmojiResId())
-
-            tvMinCorrectAnswers.text = String.format(
-                getString(R.string.required_amount_cor_answers),
-                gameResult.gameSettings.minCountOfRightAnswers
-            )
-
-            tvScore.text = String.format(
-                getString(R.string.your_score),
-                gameResult.countOfRightAnswers
-            )
-
-            tvMinPercent.text = String.format(
-                getString(R.string.required_percent_of_correct_answers),
-                gameResult.gameSettings.minPercentOfRightAnswers
-            )
+//            tvMinCorrectAnswers.text = String.format(
+//                getString(R.string.required_amount_cor_answers),
+//                gameResult.gameSettings.minCountOfRightAnswers
+//            )
+//
+//            tvScore.text = String.format(
+//                getString(R.string.your_score),
+//                gameResult.countOfRightAnswers
+//            )
+//
+//            tvMinPercent.text = String.format(
+//                getString(R.string.required_percent_of_correct_answers),
+//                gameResult.gameSettings.minPercentOfRightAnswers
+//            )
 
             tvPercent.text = String.format(
                 getString(R.string.your_percent_of_correct_answers),
