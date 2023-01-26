@@ -19,7 +19,7 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/sad_face"
+        app:reactionImage="@{gameResult.winner}"
         app:layout_constraintBottom_toTopOf="@+id/tv_min_correct_answers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="@{gameResult.gameSettings.minCountOfRightAnswersString}"
+        app:requiredAnswers="@{gameResult.gameSettings.minCountOfRightAnswers}"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_score"
         app:layout_constraintTop_toBottomOf="@+id/iv_reaction" />
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@{gameResult.countOfRightAnswersString}"
+        app:score="@{gameResult.countOfRightAnswers}"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_min_percent"
         app:layout_constraintTop_toBottomOf="@+id/tv_min_correct_answers" />
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@{gameResult.gameSettings.minPercentOfRightAnswersString}"
+        app:requiredPercent="@{gameResult.gameSettings.minPercentOfRightAnswers}"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_percent"
         app:layout_constraintTop_toBottomOf="@+id/tv_score" />
@@ -62,8 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/your_percent_of_correct_answers"
         android:textSize="16sp"
+        app:scorePercent="@{gameResult}"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/tv_min_percent" />
 
