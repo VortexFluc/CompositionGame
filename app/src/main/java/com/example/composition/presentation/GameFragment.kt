@@ -57,57 +57,25 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         observeViewModel()
         setupButtonClickListeners()
 
     }
 
     private fun observeViewModel() {
+
         viewModel.question.observe(viewLifecycleOwner) {
-            if (it != null) {
-                setupNewQuestion(it)
-            }
+            setupNewQuestion(it)
         }
 
-        viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.progressBar.setProgress(it, true)
-        }
-
-        viewModel.enoughCount.observe(viewLifecycleOwner) {
-            binding.tvAnswerProgress.setTextColor(getColorByState(it))
-        }
-
-        viewModel.enoughPercent.observe(viewLifecycleOwner) {
-            val color = getColorByState(it)
-            binding.progressBar.progressTintList = ColorStateList.valueOf(color)
-        }
-
-        viewModel.formattedTime.observe(viewLifecycleOwner) {
-            binding.tvTimer.text = it
-        }
-
-        viewModel.minPercent.observe(viewLifecycleOwner) {
-            binding.progressBar.secondaryProgress = it
-        }
-
-        viewModel.progressString.observe(viewLifecycleOwner) {
-            binding.tvAnswerProgress.text = it
-        }
 
         viewModel.gameResult.observe(viewLifecycleOwner) {
             launchGameFinishedFragment(it)
         }
     }
 
-    private fun getColorByState(goodState: Boolean): Int {
-        val colorResId = if (goodState) {
-            android.R.color.holo_green_light
-        } else {
-            android.R.color.holo_red_light
-        }
-        val color = ContextCompat.getColor(requireContext(), colorResId)
-        return color
-    }
 
     private fun setupButtonClickListeners() {
         for (tvOption in tvOptions) {
@@ -120,9 +88,6 @@ class GameFragment : Fragment() {
 
     private fun setupNewQuestion(it: Question) {
         with(binding) {
-            tvQuestion.text = it.sum.toString()
-            tvAddendum1.text = it.visibleNumber.toString()
-
             var options = it.options.toList()
             options = options.shuffled()
 

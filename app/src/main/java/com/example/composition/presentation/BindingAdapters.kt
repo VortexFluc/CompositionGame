@@ -1,10 +1,19 @@
 package com.example.composition.presentation
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.example.composition.R
 import com.example.composition.domain.entity.GameResult
+import com.example.composition.domain.entity.Question
+
+interface OnOptionClickListener {
+    fun onOptionClick(option: String)
+}
 
 @BindingAdapter("requiredAnswers")
 fun bindRequiredAnswers(textView: TextView, count: Int) {
@@ -54,3 +63,52 @@ private fun getEmojiResId(winner: Boolean): Int {
     }
     return R.drawable.sad_face
 }
+
+@BindingAdapter("progressData")
+fun bind_progressBar(progressBar: ProgressBar, progress: Int) {
+    progressBar.setProgress(progress, true)
+}
+
+@BindingAdapter("question")
+fun bind_question(textView: TextView, question: Question) {
+    textView.text = question.sum.toString()
+}
+
+@BindingAdapter("changeAnswerColorIfTrue")
+fun bind_enoughCount(textView: TextView, enough: Boolean) {
+    textView.setTextColor(getColorByState(enough, textView.context))
+}
+
+@BindingAdapter("changePercentColorIfTrue")
+fun bind_enoughCount(progressBar: ProgressBar, enough: Boolean) {
+    val color = getColorByState(enough, progressBar.context)
+    progressBar.progressTintList = ColorStateList.valueOf(color)
+}
+
+@BindingAdapter("addendum1")
+fun bind_addendum1(textView: TextView, question: Question) {
+    textView.text = question.visibleNumber.toString()
+}
+
+@BindingAdapter("secondaryData")
+fun bind_secondaryProgress(progressBar: ProgressBar, progress: Int) {
+    progressBar.secondaryProgress = progress
+}
+
+@BindingAdapter("onOptionClick")
+fun bind_onOptionClick(textView: TextView, clickListener: OnOptionClickListener) {
+    textView.setOnClickListener {
+        clickListener.onOptionClick(textView.text.toString())
+    }
+}
+
+private fun getColorByState(goodState: Boolean, context: Context): Int {
+    val colorResId = if (goodState) {
+        android.R.color.holo_green_light
+    } else {
+        android.R.color.holo_red_light
+    }
+    val color = ContextCompat.getColor(context, colorResId)
+    return color
+}
+
