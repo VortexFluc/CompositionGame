@@ -68,6 +68,48 @@ class GameFinishedFragment : Fragment() {
                 retryGame()
             }
         }
+
+        setupViews()
+
+    }
+
+    private fun setupViews() {
+        with(binding) {
+
+            ivReaction.setImageResource(getEmojiResId())
+
+            tvMinCorrectAnswers.text = String.format(
+                getString(R.string.required_amount_cor_answers),
+                gameResult.gameSettings.minCountOfRightAnswers
+            )
+
+            tvScore.text = String.format(
+                getString(R.string.your_score),
+                gameResult.countOfRightAnswers
+            )
+
+            tvMinPercent.text = String.format(
+                getString(R.string.required_percent_of_correct_answers),
+                gameResult.gameSettings.minPercentOfRightAnswers
+            )
+
+            tvPercent.text = String.format(
+                getString(R.string.your_percent_of_correct_answers),
+                getPercentOfRightAnswers()
+            )
+        }
+    }
+
+    private fun getPercentOfRightAnswers(): Int {
+        if (gameResult.countOfQuestions == 0) return 0
+        return ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
+    }
+
+    private fun getEmojiResId(): Int {
+        if (gameResult.winner) {
+            return R.drawable.emoji_smile
+        }
+        return R.drawable.sad_face
     }
 
     private fun retryGame() {
